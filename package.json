@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "eventfinda-mcp": "./dist/index.js"
+  },
   "dependencies": {
     "@eslint/js": "^9.21.0",
     "@types/node": "^16.18.126",
