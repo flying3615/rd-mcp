@@ -1,46 +1,145 @@
-# Getting Started with Create React App
+# Eventfinda MCP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This plugin provides access to event data from the Eventfinda API. It allows AI agents to search for events by location and retrieve detailed information including event descriptions, dates, addresses, and ticket information.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- Search for events by location
+- Get detailed event information including:
+  - Event title and description
+  - Event URL
+  - Date and time information
+  - Address/location details
+  - Ticket availability and pricing
+  - Free event identification
 
-### `npm start`
+## Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Basic Configuration
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Apply API username and password from https://www.eventfinda.co.nz/api/v2/index
 
-### `npm test`
+To use with Claude Desktop / Cursor / cline, ensure your configuration matches:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```json
+{
+  "mcpServers": {
+    "youtube-transcript": {
+      "command": "npx",
+      "args": ["-y", "@gabriel3615/eventfinda-mcp"],
+      "env": {
+        "EVENTFINDA_USERNAME": "USERNAME",
+        "EVENTFINDA_PASSWORD": "PASSWORD"
+      }
+    }
+  }
+}
+```
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js (v14 or higher)
+- Eventfinda API credentials
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Environment Configuration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Create a `.env` file in the root directory with your Eventfinda API credentials:
 
-### `npm run eject`
+```
+EVENTFINDA_USERNAME=your_api_username
+EVENTFINDA_PASSWORD=your_api_password
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Installation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Usage
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Starting the MCP
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This starts the MCP server using stdio transport, making it available to AI agents.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Accessing the Plugin in an AI Agent
+
+Example prompt to an AI agent with access to this plugin:
+
+```
+Find me free events happening in Auckland this week.
+```
+
+## API Tools
+
+### list_events
+
+Lists events within the next week for a specified location.
+
+**Parameters:**
+- `location`: String - The location to search for events in (e.g., "Auckland", "Wellington")
+- `get_ticket_info`: Boolean (optional) - Whether to include ticket information
+
+**Response Example:**
+
+```json
+[
+  {
+    "id": 123456,
+    "title": "Summer Music Festival",
+    "description": "A weekend of live music performances...",
+    "url": "https://www.eventfinda.co.nz/2023/summer-music-festival/auckland",
+    "datetime_start": "2023-11-25T15:00:00",
+    "datetime_end": "2023-11-25T22:00:00",
+    "address": "123 Main Street, Auckland CBD, Auckland",
+    "is_free": false,
+    "ticket_info": [
+      {
+        "name": "General Admission",
+        "price": "25.00",
+        "currency": "NZD"
+      }
+    ]
+  },
+  {
+    "id": 123457,
+    "title": "Community Art Exhibition",
+    "description": "Local artists showcase their work...",
+    "url": "https://www.eventfinda.co.nz/2023/community-art-exhibition/auckland",
+    "datetime_start": "2023-11-26T10:00:00",
+    "datetime_end": "2023-11-26T16:00:00",
+    "address": "Auckland Art Gallery, Auckland CBD",
+    "is_free": true,
+    "ticket_info": "Free event"
+  }
+]
+```
+
+## Development
+
+### Running in Development Mode
+
+```bash
+npm run dev
+```
+
+### Testing the API
+
+You can test the API using the included HTTP request files in the `requests` directory:
+
+```
+requests/auth-request.http
+```
+
+## Eventfinda API Reference
+
+This plugin uses the Eventfinda API v2. For more information, visit:
+https://www.eventfinda.co.nz/api/v2/index
+
+## License
+
+MIT
