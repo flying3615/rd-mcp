@@ -31,8 +31,8 @@
     "prepare": "npm run build",
     "lint": "npx eslint src",
     "lint:fix": "npm run lint -- --fix",
-    "publish:patch": "npm version patch",
-    "publish:minor": "npm version minor",
-    "publish:major": "npm version major"
+    "release:patch": "npm version patch && npm publish --access public",
+    "release:minor": "npm version minor && npm publish --access public",
+    "release:major": "npm version major && npm publish --access public"
   }
 }
