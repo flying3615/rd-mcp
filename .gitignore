@@ -24,3 +24,5 @@ yarn-error.log*
 
 .env
 requests/*.env.json
+
+/dist
