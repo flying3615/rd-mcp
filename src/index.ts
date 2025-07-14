@@ -96,6 +96,7 @@ server.addTool({
     const locations = await fetchFromEventfinda('locations', {
       q: args.location,
     });
+
     if (!locations.locations.length) {
       throw new UserError(`Could not find location: ${args.location}`);
     }
