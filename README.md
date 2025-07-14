@@ -4,6 +4,8 @@ This plugin provides access to event data from the Eventfinda API. It allows AI 
 
 ## Features
 
+![Eventfinda MCP Overview](./images/eventfinda-mcp-overview.png)
+
 - Search for events by location
 - Get detailed event information including:
   - Event title and description
@@ -82,7 +84,6 @@ Lists events within the next week for a specified location.
 
 **Parameters:**
 - `location`: String - The location to search for events in (e.g., "Auckland", "Wellington")
-- `get_ticket_info`: Boolean (optional) - Whether to include ticket information
 
 **Response Example:**
 
@@ -118,6 +119,25 @@ Lists events within the next week for a specified location.
   }
 ]
 ```
+
+## Adding Images
+
+To add images to the plugin:
+
+1. Create an `images` folder in the root directory if it doesn't exist:
+   ```bash
+   mkdir -p images
+   ```
+
+2. Add your image files (PNG, JPG, etc.) to the images folder:
+   ```bash
+   cp /path/to/your/image.png ./images/
+   ```
+
+3. Reference the images in your Markdown files using relative paths:
+   ```markdown
+   ![Image Description](./images/image.png)
+   ```
 
 ## Development
 
