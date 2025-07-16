@@ -1,6 +1,13 @@
 ### Variables - using the same credentials from index.ts
-@username = ${EVENTFINDA_USERNAME}
-@password = ${EVENTFINDA_PASSWORD}
+@username = {{EVENTFINDA_USERNAME}}
+@password = {{EVENTFINDA_PASSWORD}}
+
+### Example values for testing
+@locationId = 2
+@startDate = 2025-07-18 00:00:00
+@endDate = 2025-07-25 23:59:59
+@locationQuery = Auckland
+@eventId = 889003
 
 ### Get request to Eventfinda API with Basic Authentication
 GET https://api.eventfinda.co.nz/v2/events.json
@@ -21,10 +28,3 @@ Accept: application/json
 GET https://api.eventfinda.co.nz/v2/events/{{eventId}}.json
 Authorization: Basic {{username}} {{password}}
 Accept: application/json
-
-### Example values for testing
-@locationId = 2
-@startDate = 2023-10-01
-@endDate = 2023-10-07
-@locationQuery = Auckland
-@eventId = 889003

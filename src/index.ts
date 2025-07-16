@@ -80,11 +80,15 @@ async function fetchEventDescription(
   }
 }
 
+const formatDateTime = (date: Date) => {
+  return date.toISOString().replace('T', ' ').split('.')[0];
+};
+
 server.addTool({
   name: 'list_events',
   description: 'List all events within this week for a given location.',
   parameters: z.object({
-    location: z.string().describe('The location to search for events in.')
+    location: z.string().describe('The location to search for events in.'),
   }),
   execute: async (args, { log }) => {
     const today = new Date();
@@ -107,8 +111,8 @@ server.addTool({
     // Step 2: Get events by location and date range
     const eventsResponse = await fetchFromEventfinda('events', {
       location: locationId,
-      start_date: today.toISOString().split('T')[0],
-      end_date: nextWeek.toISOString().split('T')[0],
+      start_date: formatDateTime(today),
+      end_date: formatDateTime(nextWeek),
       rows: '10', // Limit to 10 events to avoid rate limiting
     });
 
