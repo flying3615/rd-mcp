@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { FastMCP } from 'fastmcp';
+import { FastMCP, UserError } from 'fastmcp';
 import { z } from 'zod';
 import { getHotPosts, getPostDetails } from './redditClient.js';
 import { RedditComment } from './types.js';
@@ -33,7 +33,7 @@ server.addTool({
       return `Top posts in r/${args.subreddit}:\n\n${formattedPosts}`;
     } catch (error) {
       console.error('Failed to get and display posts.', error);
-      return 'Error fetching posts from Reddit.';
+      throw new UserError('Error fetching posts from Reddit.');
     }
   },
 });
@@ -82,7 +82,7 @@ server.addTool({
       return result;
     } catch (error) {
       console.error('Failed to get post details.', error);
-      return 'Error fetching post details from Reddit.';
+      throw new UserError('Error fetching post details from Reddit.');
     }
   },
 });
