@@ -7,6 +7,22 @@ import { RedditComment } from './types.js';
 
 const server = new FastMCP({ name: 'Reddit MCP Server', version: '1.0.0' });
 
+function formatComments(comments: RedditComment[], depth = 0): string {
+  let result = '';
+  for (const comment of comments) {
+    if (comment.kind === 't1') {
+      result += `${'  '.repeat(depth)}[${comment.data.ups}] ${comment.data.author}: ${comment.data.body.replace(/\n/g, `\n${'  '.repeat(depth)}`)}\n`;
+      if (
+        typeof comment.data.replies === 'object' &&
+        comment.data.replies.data.children.length > 0
+      ) {
+        result += formatComments(comment.data.replies.data.children, depth + 1);
+      }
+    }
+  }
+  return result;
+}
+
 server.addTool({
   name: 'getRedditHotPosts',
   description: 'Get hot posts from a specified subreddit',
@@ -37,22 +53,6 @@ server.addTool({
     }
   },
 });
-
-function formatComments(comments: RedditComment[], depth = 0): string {
-  let result = '';
-  for (const comment of comments) {
-    if (comment.kind === 't1') {
-      result += `${'  '.repeat(depth)}[${comment.data.ups}] ${comment.data.author}: ${comment.data.body.replace(/\n/g, `\n${'  '.repeat(depth)}`)}\n`;
-      if (
-        typeof comment.data.replies === 'object' &&
-        comment.data.replies.data.children.length > 0
-      ) {
-        result += formatComments(comment.data.replies.data.children, depth + 1);
-      }
-    }
-  }
-  return result;
-}
 
 server.addTool({
   name: 'getRedditPostDetails',
@@ -87,4 +87,4 @@ server.addTool({
   },
 });
 
-server.start({ transportType: 'stdio' });
+await server.start({ transportType: 'stdio' });
