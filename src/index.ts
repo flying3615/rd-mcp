@@ -1,8 +1,12 @@
+#!/usr/bin/env node
+
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
 import { getHotPosts, getPostDetails } from './redditClient.js';
 import { RedditComment } from './types.js';
+
 const server = new FastMCP({ name: 'Reddit MCP Server', version: '1.0.0' });
+
 server.addTool({
   name: 'getRedditHotPosts',
   description: 'Get hot posts from a specified subreddit',
@@ -33,6 +37,7 @@ server.addTool({
     }
   },
 });
+
 function formatComments(comments: RedditComment[], depth = 0): string {
   let result = '';
   for (const comment of comments) {
@@ -48,6 +53,7 @@ function formatComments(comments: RedditComment[], depth = 0): string {
   }
   return result;
 }
+
 server.addTool({
   name: 'getRedditPostDetails',
   description: 'Fetch detailed content of a specific post',
@@ -80,4 +86,5 @@ server.addTool({
     }
   },
 });
+
 server.start({ transportType: 'stdio' });
