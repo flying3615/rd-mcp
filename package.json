@@ -1,14 +1,13 @@
 {
-  "name": "@gabriel3615/eventfinda-mcp",
-  "version": "0.1.4",
+  "name": "@gabriel3615/rd-mcp",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "eventfinda-mcp": "./dist/index.js"
+    "rd-mcp": "./dist/index.js"
   },
   "dependencies": {
     "@eslint/js": "^9.21.0",
-    "@types/node": "^16.18.126",
     "dotenv": "^17.2.0",
     "eslint-config-prettier": "^10.0.2",
     "eslint-plugin-prettier": "^5.2.3",
@@ -19,13 +18,15 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.17.16",
+    "@types/node": "^24.1.0",
+    "axios": "^1.11.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "build": "rimraf dist && tsc",
-    "start": "node dist/index.js",
+    "start": "node --loader ts-node/esm src/index.ts",
     "dev": "fastmcp dev src/index.ts",
     "inspect": "npm run build && fastmcp inspect src/index.ts",
     "prepare": "npm run build",

@@ -26,3 +26,5 @@ yarn-error.log*
 requests/*.env.json
 
 /dist
+/logs
+.idea
