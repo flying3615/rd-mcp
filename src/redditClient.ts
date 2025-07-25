@@ -31,3 +31,62 @@ export async function getPostDetails(
     throw error;
   }
 }
+
+export async function getNewPosts(
+  subreddit: string,
+  limit: number = 10
+): Promise<RedditApiResponse> {
+  try {
+    const response = await axios.get(
+      `https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching new posts:', error);
+    throw error;
+  }
+}
+
+export async function getTopPosts(
+  subreddit: string,
+  limit: number = 10,
+  time: 'hour' | 'day' | 'week' | 'month' | 'year' | 'all' = 'day'
+): Promise<RedditApiResponse> {
+  try {
+    const response = await axios.get(
+      `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching top posts:', error);
+    throw error;
+  }
+}
+
+export async function searchSubreddit(
+  subreddit: string,
+  query: string,
+  limit: number = 10
+): Promise<RedditApiResponse> {
+  try {
+    const response = await axios.get(
+      `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&restrict_sr=1`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error searching subreddit:', error);
+    throw error;
+  }
+}
+
+export async function getUserInfo(username: string): Promise<any> {
+  try {
+    const response = await axios.get(
+      `https://www.reddit.com/user/${username}/about.json`
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user info:', error);
+    throw error;
+  }
+}

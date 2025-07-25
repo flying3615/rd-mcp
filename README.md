@@ -61,6 +61,81 @@ Comments:
   [5] another_user: I agree!
 ```
 
+### `getRedditNewPosts`
+
+Fetches the newest posts from a specified subreddit.
+
+**Parameters:**
+- `subreddit`: String - The name of the subreddit (e.g., "typescript", "reactjs").
+- `limit`: Number (optional, default: 10) - The number of posts to fetch.
+
+**Response Example:**
+
+```
+Newest posts in r/typescript:
+
+1. [post_id] Post title
+   Author: author, Upvotes: 123, Comments: 45
+   URL: https://reddit.com/...
+```
+
+### `getRedditTopPosts`
+
+Fetches the top posts from a specified subreddit, with an optional time filter.
+
+**Parameters:**
+- `subreddit`: String - The name of the subreddit.
+- `limit`: Number (optional, default: 10) - The number of posts to fetch.
+- `time`: String (optional, default: 'day') - One of 'hour', 'day', 'week', 'month', 'year', 'all'.
+
+**Response Example:**
+
+```
+Top posts in r/typescript (time: day):
+
+1. [post_id] Post title
+   Author: author, Upvotes: 123, Comments: 45
+   URL: https://reddit.com/...
+```
+
+### `searchRedditSubreddit`
+
+Searches for posts in a subreddit by query.
+
+**Parameters:**
+- `subreddit`: String - The name of the subreddit.
+- `query`: String - The search query.
+- `limit`: Number (optional, default: 10) - The number of posts to fetch.
+
+**Response Example:**
+
+```
+Search results for "typescript" in r/typescript:
+
+1. [post_id] Post title
+   Author: author, Upvotes: 123, Comments: 45
+   URL: https://reddit.com/...
+```
+
+### `getRedditUserInfo`
+
+Fetches information about a Reddit user.
+
+**Parameters:**
+- `username`: String - The Reddit username.
+
+**Response Example:**
+
+```
+User: u/example
+Karma: 12345
+Created: 2020-01-01 12:00:00
+Is Gold: false
+Is Mod: false
+Verified: true
+Icon: https://...
+```
+
 ## Development
 
 ### Running in Development Mode
