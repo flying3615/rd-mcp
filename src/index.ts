@@ -11,6 +11,9 @@ import {
   getUserInfo,
 } from './redditClient.js';
 import { RedditComment } from './types.js';
+import axios from 'axios';
+import path from 'path';
+import https from 'https';
 
 const server = new FastMCP({ name: 'Reddit MCP Server', version: '1.0.0' });
 
@@ -92,12 +95,26 @@ server.addTool({
         post.url.toLowerCase().endsWith(ext)
       );
       if (isImage) {
-        return {
-          content: [
-            { type: 'text', text: textResult },
-            await imageContent({ url: post.url }),
-          ],
-        };
+        try {
+          const response = await axios.get(post.url, {
+            responseType: 'arraybuffer',
+            httpsAgent: new https.Agent({
+              rejectUnauthorized: false,
+            }),
+          });
+          // Return both text and image
+          return {
+            content: [
+              { type: 'text', text: textResult },
+              await imageContent({
+                buffer: Buffer.from(response.data),
+              }),
+            ],
+          };
+        } catch (imgErr) {
+          textResult += `\n[Image fetch failed: ${imgErr}]`;
+          return textResult;
+        }
       } else {
         return textResult;
       }
