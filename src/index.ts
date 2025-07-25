@@ -71,6 +71,7 @@ server.addTool({
     post_id: z.string(),
     comment_limit: z.number().optional().default(50),
     comment_depth: z.number().optional().default(3),
+    with_image: z.boolean().optional().default(false),
   }),
   execute: async args => {
     try {
@@ -89,18 +90,16 @@ server.addTool({
       textResult += `Content:\n${post.selftext}\n\n`;
       textResult += `Comments:\n`;
       textResult += formatComments(comments);
-      // Check if URL is an image
+      // Check if URL is an image and with_image is true
       const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
       const isImage = imageExtensions.some(ext =>
         post.url.toLowerCase().endsWith(ext)
       );
-      if (isImage) {
+      if (args.with_image && isImage) {
         try {
           const response = await axios.get(post.url, {
             responseType: 'arraybuffer',
-            httpsAgent: new https.Agent({
-              rejectUnauthorized: false,
-            }),
+            httpsAgent: new https.Agent({ rejectUnauthorized: false }),
           });
           // Return both text and image
           return {
