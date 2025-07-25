@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { RedditApiResponse, RedditPostAndCommentsResponse } from './types.js';
 
+// Disable SSL certificate validation for development purposes
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 export async function getHotPosts(
   subreddit: string,
   limit: number = 10
