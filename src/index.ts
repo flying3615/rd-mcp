@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { FastMCP, UserError } from 'fastmcp';
+import { FastMCP, UserError, imageContent } from 'fastmcp';
 import { z } from 'zod';
 import {
   getHotPosts,
@@ -78,15 +78,29 @@ server.addTool({
       );
       const post = postDetails.data.children[0].data;
       const comments = commentListing.data.children;
-      let result = `Title: ${post.title}\n`;
-      result += `Author: ${post.author}\n`;
-      result += `Upvotes: ${post.ups}\n`;
-      result += `Comments: ${post.num_comments}\n`;
-      result += `URL: ${post.url}\n\n`;
-      result += `Content:\n${post.selftext}\n\n`;
-      result += `Comments:\n`;
-      result += formatComments(comments);
-      return result;
+      let textResult = `Title: ${post.title}\n`;
+      textResult += `Author: ${post.author}\n`;
+      textResult += `Upvotes: ${post.ups}\n`;
+      textResult += `Comments: ${post.num_comments}\n`;
+      textResult += `URL: ${post.url}\n\n`;
+      textResult += `Content:\n${post.selftext}\n\n`;
+      textResult += `Comments:\n`;
+      textResult += formatComments(comments);
+      // Check if URL is an image
+      const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+      const isImage = imageExtensions.some(ext =>
+        post.url.toLowerCase().endsWith(ext)
+      );
+      if (isImage) {
+        return {
+          content: [
+            { type: 'text', text: textResult },
+            await imageContent({ url: post.url }),
+          ],
+        };
+      } else {
+        return textResult;
+      }
     } catch (error) {
       console.error('Failed to get post details.', error);
       throw new UserError('Error fetching post details from Reddit.');
