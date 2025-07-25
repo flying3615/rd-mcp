@@ -1,8 +1,12 @@
 import axios from 'axios';
+import https from 'https';
 import { RedditApiResponse, RedditPostAndCommentsResponse } from './types.js';
 
-// Disable SSL certificate validation for development purposes
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+const axiosInsecureConfig = {
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
+};
 
 export async function getHotPosts(
   subreddit: string,
@@ -10,7 +14,8 @@ export async function getHotPosts(
 ): Promise<RedditApiResponse> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/r/${subreddit}/hot.json?limit=${limit}`
+      `https://www.reddit.com/r/${subreddit}/hot.json?limit=${limit}`,
+      axiosInsecureConfig
     );
     return response.data;
   } catch (error) {
@@ -26,7 +31,8 @@ export async function getPostDetails(
 ): Promise<RedditPostAndCommentsResponse> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/comments/${postId}.json?limit=${commentLimit}&depth=${commentDepth}`
+      `https://www.reddit.com/comments/${postId}.json?limit=${commentLimit}&depth=${commentDepth}`,
+      axiosInsecureConfig
     );
     return response.data;
   } catch (error) {
@@ -41,7 +47,8 @@ export async function getNewPosts(
 ): Promise<RedditApiResponse> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`
+      `https://www.reddit.com/r/${subreddit}/new.json?limit=${limit}`,
+      axiosInsecureConfig
     );
     return response.data;
   } catch (error) {
@@ -57,7 +64,8 @@ export async function getTopPosts(
 ): Promise<RedditApiResponse> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`
+      `https://www.reddit.com/r/${subreddit}/top.json?limit=${limit}&t=${time}`,
+      axiosInsecureConfig
     );
     return response.data;
   } catch (error) {
@@ -74,7 +82,8 @@ export async function searchSubreddit(
 ): Promise<RedditApiResponse> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&restrict_sr=1&sort=${sort}`
+      `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&restrict_sr=1&sort=${sort}`,
+      axiosInsecureConfig
     );
     return response.data;
   } catch (error) {
@@ -86,7 +95,8 @@ export async function searchSubreddit(
 export async function getUserInfo(username: string): Promise<any> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/user/${username}/about.json`
+      `https://www.reddit.com/user/${username}/about.json`,
+      axiosInsecureConfig
     );
     return response.data;
   } catch (error) {
