@@ -28,7 +28,7 @@ server.addTool({
   description: 'Get hot posts from a specified subreddit',
   parameters: z.object({
     subreddit: z.string(),
-    limit: z.number().optional().default(10),
+    limit: z.number().optional().default(30),
   }),
   execute: async args => {
     try {
@@ -59,8 +59,8 @@ server.addTool({
   description: 'Fetch detailed content of a specific post',
   parameters: z.object({
     post_id: z.string(),
-    comment_limit: z.number().optional().default(10),
-    comment_depth: z.number().optional().default(2),
+    comment_limit: z.number().optional().default(50),
+    comment_depth: z.number().optional().default(3),
   }),
   execute: async args => {
     try {
