@@ -66,11 +66,12 @@ export async function getTopPosts(
 export async function searchSubreddit(
   subreddit: string,
   query: string,
-  limit: number = 10
+  limit: number = 10,
+  sort: 'relevance' | 'hot' | 'top' | 'new' | 'comments' = 'relevance'
 ): Promise<RedditApiResponse> {
   try {
     const response = await axios.get(
-      `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&restrict_sr=1`
+      `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&restrict_sr=1&sort=${sort}`
     );
     return response.data;
   } catch (error) {

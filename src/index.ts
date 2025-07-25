@@ -172,13 +172,18 @@ server.addTool({
     subreddit: z.string(),
     query: z.string(),
     limit: z.number().optional().default(30),
+    sort: z
+      .enum(['relevance', 'hot', 'top', 'new', 'comments'])
+      .optional()
+      .default('relevance'),
   }),
   execute: async args => {
     try {
       const postsResponse = await searchSubreddit(
         args.subreddit,
         args.query,
-        args.limit
+        args.limit,
+        args.sort
       );
       const posts = postsResponse.data.children;
       if (posts.length === 0) {
@@ -193,7 +198,7 @@ server.addTool({
           );
         })
         .join('\n\n');
-      return `Search results for "${args.query}" in r/${args.subreddit}:\n\n${formattedPosts}`;
+      return `Search results for "${args.query}" in r/${args.subreddit} (sort: ${args.sort}):\n\n${formattedPosts}`;
     } catch (error) {
       console.error('Failed to search subreddit.', error);
       throw new UserError('Error searching subreddit on Reddit.');
